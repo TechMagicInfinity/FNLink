@@ -197,22 +197,22 @@ function switchChat(chatId, label) {
 
 // --- WebSocket ---
 function connectWs() {
-  setStatus(false, 'подключение...');
+  setStatus(false, 'Подключение...');
   ws = new WebSocket(`${serverWs}/ws?token=${encodeURIComponent(token)}`);
 
   ws.onopen = () => {
-    setStatus(true, 'онлайн');
+    setStatus(true, 'Онлайн');
     ws.send(JSON.stringify({ type: 'history', chat: currentChat }));
     historyLoaded.add(currentChat);
   };
 
   ws.onclose = () => {
-    setStatus(false, 'нет соединения, переподключение...');
+    setStatus(false, 'Нет соединения, переподключение...');
     setTimeout(connectWs, 2000);
   };
 
   ws.onerror = () => {
-    setStatus(false, 'ошибка соединения');
+    setStatus(false, 'Ошибка соединения');
   };
 
   ws.onmessage = (event) => {
@@ -268,7 +268,7 @@ function renderMessages() {
     el.className = 'msg' + (msg.from === myUsername ? ' own' : '');
 
     const meta = document.createElement('div');
-    meta.className = 'msg-meta';
+    meta.className = 'msg-meta' + (msg.from === myUsername ? ' own' : '');
     const time = new Date(msg.ts).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
     meta.textContent = `${msg.from} · ${time}`;
 
