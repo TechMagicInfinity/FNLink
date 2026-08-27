@@ -32,7 +32,8 @@
     "publish": {
       "provider": "github",
       "owner": "TechMagicInfinity",
-      "repo": "DMmessenger"
+      "repo": "DMmessenger",
+      "releaseType": "release"
     },
     "win": {
       "target": "nsis"
