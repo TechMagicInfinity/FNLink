@@ -1,12 +1,12 @@
 :root {
-  --bg-0: #14161a;
-  --bg-1: #1b1e24;
-  --bg-2: #23272f;
-  --border: #2f333c;
+  --bg-0: #10151f;
+  --bg-1: #161d2b;
+  --bg-2: #1e2739;
+  --border: #2b3549;
   --text: #e4e6eb;
   --text-dim: #8a8f9c;
-  --accent: #4fd1ae;
-  --accent-dim: #2e7a67;
+  --accent: #4dd0ff;
+  --accent-dim: #1e6bda;
   --danger: #e5675f;
   --font-mono: "SF Mono", "Consolas", "Menlo", monospace;
   --font-sans: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
@@ -119,7 +119,7 @@ html, body {
   border: none;
   border-radius: 6px;
   padding: 10px 0;
-  color: #0d1512;
+  color: #05233b;
   font-weight: 600;
   font-size: 13px;
   cursor: pointer;
@@ -155,6 +155,24 @@ html, body {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+#logout-btn {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  border-radius: 6px;
+}
+
+#logout-btn:hover {
+  color: var(--text);
+  background: var(--bg-2);
 }
 
 .status-dot {
@@ -203,27 +221,116 @@ html, body {
 
 .chat-item-dot.online { background: var(--accent); }
 
+/* Компактные бейджи в списке чатов для трёх особых юзеров — мини-версия
+   их карточки из футера (иконка + имя), но не на всю строку. */
+
+.chat-item-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6px 12px;
+  border-radius: 10px;
+}
+
+.badge-technomage-icon,
+.badge-glacio-icon,
+.badge-mercury-icon {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.badge-technomage-icon svg,
+.badge-glacio-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.badge-mercury-icon img {
+  display: block;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+}
+
+/* иконка кастомного юзера тускнеет вместо кружка статуса, когда он не в сети */
+.badge-icon-offline {
+  filter: grayscale(1) brightness(0.55) !important;
+  opacity: 0.75;
+}
+
+.badge-technomage {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    115deg,
+    #382a1c 0%,
+    #382a1c 42%,
+    #2a1f3a 58%,
+    #2a1f3a 100%
+  );
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+    0 0 10px rgba(249, 115, 22, 0.12),
+    0 0 10px rgba(168, 85, 247, 0.12);
+}
+
+/* светящийся шов на стыке двух половин — та же идея, что в футере,
+   иначе тёмный фон бейджа сливается с фоном сайдбара */
+.badge-technomage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 40%,
+    rgba(249, 115, 22, 0.6) 48%,
+    rgba(168, 85, 247, 0.6) 52%,
+    transparent 60%
+  );
+  filter: blur(3px);
+  pointer-events: none;
+}
+
+.badge-glacio {
+  background: linear-gradient(135deg, #4b3f91 0%, #7c6fd1 45%, #b9d3ec 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+}
+
+.badge-mercury {
+  background: linear-gradient(135deg, #2b0f05 0%, #b8320a 45%, #ff9a3d 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 176, 32, 0.25);
+}
+
+.badge-technomage-name {
+  position: relative;
+  font-size: 13px;
+}
+
+.badge-glacio-name,
+.badge-mercury-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
 .sidebar-footer {
   padding: 12px 16px;
   border-top: 1px solid var(--border);
   display: flex;
   align-items: center;
-  justify-content: space-between;
   font-family: var(--font-mono);
   font-size: 12px;
   color: var(--text-dim);
 }
 
-#logout-btn {
-  background: none;
-  border: none;
-  color: var(--text-dim);
-  cursor: pointer;
-  font-size: 12px;
-  text-decoration: underline;
+#me-username {
+  display: inline-flex;
+  align-items: center;
 }
-
-#logout-btn:hover { color: var(--text); }
 
 .chat-main {
   flex: 1;
@@ -246,30 +353,71 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  /* статичный градиент, привязанный к самому блоку, а не к его
+     содержимому — при скролле внутренние сообщения двигаются, а этот
+     фон стоит на месте (background-attachment: scroll — значение по
+     умолчанию, ровно то поведение, что нужно) */
+  background: linear-gradient(180deg, #3a9bd9 0%, #1b3f8f 100%);
 }
 
 .msg {
   max-width: 70%;
-  padding: 8px 12px;
   border-radius: 10px;
   background: var(--bg-2);
   align-self: flex-start;
+  overflow: hidden; /* обрезает полоску по скруглению самого сообщения */
+  flex-shrink: 0; /* без этого overflow:hidden даёт min-height:0 внутри flex-колонки, и все сообщения сжимаются вместо скролла */
 }
 
 .msg.own {
   align-self: flex-end;
-  background: var(--accent-dim);
+  /* светлый полупрозрачный слой поверх статичного градиента фона —
+     баббл всегда чуть светлее того, что под ним, независимо от того,
+     светлый сейчас верх градиента там или тёмный низ */
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
 }
 
 .msg-meta {
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--text-dim);
+  padding: 8px 12px 0 12px;
   margin-bottom: 3px;
 }
 
-.msg-meta.own {
-  color: var(--text);
+/* белый текст с тенью — читается на любом участке градиента, от
+   светло-голубого вверху до тёмно-синего внизу */
+.msg.own .msg-meta {
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+}
+
+.msg.own .msg-text {
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+}
+
+/* полоска-заголовок для кастомных юзеров — переиспользует фон/иконку/имя
+   от бейджей списка чатов, здесь только своя раскладка под сообщение */
+.msg-strip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+}
+
+.msg-strip-time {
+  position: relative;
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.75);
+  flex-shrink: 0;
+}
+
+.msg-body {
+  padding: 4px 12px 8px 12px;
 }
 
 .msg-text {
@@ -280,7 +428,7 @@ html, body {
 }
 
 .msg-empty {
-  color: var(--text-dim);
+  color: rgba(255, 255, 255, 0.5);
   font-size: 13px;
   text-align: center;
   margin-top: 40px;
@@ -288,8 +436,8 @@ html, body {
 
 .send-form {
   display: flex;
-  gap: 10px;
-  padding: 14px 20px;
+  gap: 8px;
+  padding: 8px 12px;
   border-top: 1px solid var(--border);
 }
 
@@ -298,7 +446,7 @@ html, body {
   background: var(--bg-2);
   border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 10px 12px;
+  padding: 7px 10px;
   color: var(--text);
   font-size: 13px;
 }
@@ -312,14 +460,178 @@ html, body {
   background: var(--accent);
   border: none;
   border-radius: 8px;
-  padding: 0 18px;
-  color: #0d1512;
+  padding: 0 14px;
+  color: #05233b;
   font-weight: 600;
   font-size: 13px;
   cursor: pointer;
 }
 
 .send-form button:hover { opacity: 0.9; }
+
+/* wave name */
+
+/* волна на нике (только у _Defender13_) */
+/* Граница всегда по центру ника, переход — мягкий, шириной примерно
+   в два символа. "Волна" — лёгкое покачивание границы вокруг центра. */
+
+@property --wave-pos {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 50%;
+}
+
+.wave-name {
+  font-weight: 700;
+  --wave-pos: 50%;
+  background-image: linear-gradient(
+    90deg,
+    var(--wave-left) 0%,
+    var(--wave-left) calc(var(--wave-pos) - 1ch),
+    var(--wave-right) calc(var(--wave-pos) + 1ch),
+    var(--wave-right) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: wave-sway 2.8s ease-in-out infinite;
+}
+
+@keyframes wave-sway {
+  0%, 100% { --wave-pos: 46%; }
+  50% { --wave-pos: 54%; }
+}
+
+/* ник SKOkirill201 везде вне своей карточки — статичный ледяной градиент,
+   в тех же тонах, что и его карточка в футере */
+.glacio-name {
+  font-weight: 700;
+  background-image: linear-gradient(90deg, #8f82e0 0%, #b9d3ec 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ник CrazyPortaler везде вне своей карточки — статичный лавовый градиент */
+.mercury-name {
+  font-weight: 700;
+  background-image: linear-gradient(90deg, #ff9a3d 0%, #ff5a1f 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* карточка "Гласио" — только у SKOkirill201, вместо обычного футера */
+
+.footer-glacio {
+  margin: 10px;
+  padding: 10px 12px;
+  border-top: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #4b3f91 0%, #7c6fd1 45%, #b9d3ec 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+}
+
+/* карточка "Меркурий" — только у CrazyPortaler, лавовая тема */
+
+.footer-mercury {
+  margin: 10px;
+  padding: 10px 12px;
+  border-top: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #2b0f05 0%, #b8320a 45%, #ff9a3d 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 176, 32, 0.25);
+}
+
+.footer-glacio-icon,
+.footer-mercury-icon,
+.footer-technomage-icon {
+  flex-shrink: 0;
+  margin-right: 8px;
+  display: inline-flex;
+}
+
+.footer-glacio-icon {
+  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.55));
+}
+
+.footer-mercury-icon {
+  filter: drop-shadow(0 0 4px rgba(255, 138, 61, 0.7));
+}
+
+.footer-mercury-icon img {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+}
+
+.footer-glacio-name,
+.footer-mercury-name {
+  color: #ffffff;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  letter-spacing: 0.2px;
+}
+
+/* карточка "Техномаг" — только у _Defender13_. В отличие от Гласио и
+   Меркурия, это не плавный градиент одного цвета, а резкий стык двух
+   тёмных полусторон (технология / магия) с оранжево-фиолетовым
+   свечением по границе — визуальный "родственник" переливающегося
+   ника, но в виде карточки. */
+
+.footer-technomage {
+  margin: 10px;
+  padding: 10px 12px;
+  border-top: none;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    115deg,
+    #241c14 0%,
+    #241c14 42%,
+    #1a1420 58%,
+    #1a1420 100%
+  );
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+/* светящийся шов на стыке двух половин */
+.footer-technomage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 44%,
+    rgba(249, 115, 22, 0.55) 49%,
+    rgba(168, 85, 247, 0.55) 51%,
+    transparent 56%
+  );
+  filter: blur(3px);
+  pointer-events: none;
+}
+
+.footer-technomage-icon {
+  position: relative;
+  margin-right: 16px;
+  filter: drop-shadow(0 0 4px rgba(249, 115, 22, 0.6))
+          drop-shadow(0 0 4px rgba(168, 85, 247, 0.6));
+}
+
+.footer-technomage-name {
+  position: relative;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  letter-spacing: 0.2px;
+}
 
 /* scrollbars */
 ::-webkit-scrollbar { width: 8px; }
