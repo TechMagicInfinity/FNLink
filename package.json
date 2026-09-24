@@ -1,6 +1,6 @@
 {
-  "name": "micromessenger-client",
-  "version": "1.1.5",
+  "name": "fnlink",
+  "version": "1.1.6",
   "private": true,
   "description": "PC-клиент микро-мессенджера",
   "author": "TechMagicInfinity <my-email@email.com>",
