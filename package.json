@@ -1,4 +1,4 @@
-{
+  {
   "name": "fnlink",
   "version": "1.1.6",
   "private": true,
@@ -24,11 +24,16 @@
     "electron-builder": "^24.13.3"
   },
   "build": {
-    "appId": "com.techmagicinfinity.fnlink",
-    "productName": "FNLink",
-    "files": [
-      "**/*",
-      "!**/node_modules/electron-builder${/*}"
+    ...
+    "linux": {
+      "target": ["AppImage", "deb"],
+      "category": "Network",
+      "executableArgs": ["--no-sandbox"]
+    },
+    "toolsets": {
+      "appimage": "1.0.3"
+    }
+  }
     ],
     "directories": {
       "output": "dist"
