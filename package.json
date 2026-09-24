@@ -3,7 +3,7 @@
   "version": "1.1.4",
   "private": true,
   "description": "PC-клиент микро-мессенджера",
-  "author": "TechMagicInfinity",
+  "author": "TechMagicInfinity <my-email@email.com>",
   "repository": {
     "type": "git",
     "url": "https://github.com/TechMagicInfinity/FNLink.git"
