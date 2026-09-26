@@ -52,6 +52,7 @@ function createWindow() {
 
   Menu.setApplicationMenu(null); // убираем стандартное меню File/Edit/View
   win.loadFile('index.html');
+  win.webContents.openDevTools();
 
   // Без системного меню пропадает и стандартный шорткат для DevTools —
   // возвращаем его вручную, чтобы можно было отлаживать (в т.ч. смотреть
