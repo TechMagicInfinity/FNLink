@@ -1,6 +1,6 @@
 {
   "name": "fnlink",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "private": true,
   "description": "PC-клиент микро-мессенджера",
   "author": "TechMagicInfinity <my-email@email.com>",
@@ -51,9 +51,6 @@
       "target": ["AppImage", "deb"],
       "category": "Network",
       "executableArgs": ["--no-sandbox"]
-    },
-    "toolsets": {
-      "appimage": "1.0.3"
     }
   }
 }
