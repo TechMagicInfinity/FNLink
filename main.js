@@ -7,6 +7,7 @@ const path = require('path');
 // тут просто зашиваем его и в собранное приложение, чтобы не заставлять
 // друзей запускать через терминал с флагами.
 app.commandLine.appendSwitch('no-sandbox');
+app.commandLine.appendSwitch('disable-dev-shm-usage');
 
 // --- автообновление через GitHub Releases ---
 // electron-builder (уже настроен в package.json) публикует релизы на
