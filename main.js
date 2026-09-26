@@ -51,7 +51,17 @@ function createWindow() {
   });
 
   Menu.setApplicationMenu(null); // убираем стандартное меню File/Edit/View
-  win.loadFile('index.html');
+  win.loadFile('index.html').catch((err) => {
+    console.error('ОШИБКА ЗАГРУЗКИ index.html:', err);
+  });
+  
+  win.webContents.on('did-fail-load', (event, errorCode, errorDescription) => {
+    console.error('did-fail-load:', errorCode, errorDescription);
+  });
+  
+  win.webContents.on('console-message', (event, level, message, line, sourceId) => {
+    console.log('[renderer console]', message, `(${sourceId}:${line})`);
+  });
   win.webContents.openDevTools();
 
   // Без системного меню пропадает и стандартный шорткат для DevTools —
